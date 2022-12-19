@@ -11,6 +11,14 @@ import {
   doc,
   deleteDoc,
 } from 'firebase/firestore';
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  UploadResult,
+  getBytes,
+  getDownloadURL,
+} from 'firebase/storage';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +36,21 @@ export class FirebaseService {
     );
     return all;
   }
+
+  uploadFile(fileId: string, file: File): Promise<UploadResult> {
+    const fileRef = ref(storage, fileId);
+    console.log('upload fileRef: ' + fileRef);
+    return uploadBytes(fileRef, file);
+  }
+
+  /*getFile(fileId: string): Promise<ArrayBuffer> {
+    const fileRef = ref(storage, fileId);
+    console.log('get fileRef: ' + fileRef);
+    return getBytes(fileRef);
+  }*/
+  getFileUrl(fileId: string): Promise<string> {
+    return getDownloadURL(ref(storage, fileId));
+  }
 }
 
 // Your web app's Firebase configuration
@@ -43,3 +66,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+// Create a root reference
+const storage = getStorage(app);

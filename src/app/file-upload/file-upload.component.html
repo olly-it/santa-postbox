@@ -1,0 +1,15 @@
+<div class="text-center">
+  <input class="form-control" type="file" (change)="onChange($event)" />
+
+  <button (click)="onUpload()" class="btn btn-success">Upload</button>
+
+  <!--Flag variable is used here-->
+  <div class="container" *ngIf="uploading">
+    <h3>Uploading ...</h3>
+  </div>
+
+  <div>
+    HERE the image:<br />
+    <img [src]="furl" />
+  </div>
+</div>

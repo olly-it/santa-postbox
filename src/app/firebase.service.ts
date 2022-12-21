@@ -3,13 +3,15 @@ import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
 // Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-import { getFirestore } from 'firebase/firestore';
 import {
+  getFirestore,
+  query,
   addDoc,
   collection,
   getDocs,
   doc,
   deleteDoc,
+  where,
 } from 'firebase/firestore';
 import {
   getStorage,
@@ -25,16 +27,48 @@ import {
 })
 export class FirebaseService {
   constructor() {}
+  me: any = {};
 
-  getAll(): [{ id: string; data: any }] {
-    var all: any = [];
-    console.log('getAll function invoked');
-    getDocs(collection(db, 'postbox')).then((querySnapshot) =>
+  async getMe(name:string, birthDate:string) : Promise<{id:string, data:any}|null> {
+    console.log('getMe function invoked: ', name, birthDate);
+    const q = query(collection(db, "postbox"), where("name", "==", name), where("birthDate", "==", birthDate));
+    /*getDocs(q).then((querySnapshot) =>
       querySnapshot.forEach((doc) => {
-        all.push({ id: doc.id, data: JSON.stringify(doc.data()) });
+        this.me={ id: doc.id, data: doc.data()};
       })
-    );
-    return all;
+    );*/
+    let querySnapshot = await getDocs(q);
+    //let ret = querySnapshot.docs.map(doc =>  {id:doc.id, data:doc.data()});
+    try {
+      return querySnapshot.docs.map( x => { return {id:x.id,data:x.data()} })[0];
+    } catch (e) {
+      return null;
+    }
+  }
+
+  add(name: string, birthDate: string, address: string) {
+    console.log('onAdd function invoked');
+    if (name == '') return;
+    try {
+      const now = new Date();
+      addDoc(collection(db, 'postbox'), {
+        name: name,
+        birthDate: birthDate,
+        address: address,
+        creationDate: now.toISOString()
+      }).then((x) => {
+        console.log('Document written with ID: ', x.id);
+        this.getMe(name, birthDate);
+      });
+    } catch (e) {
+      console.error('Error adding document: ', e);
+    }
+  }
+
+  del(id: string) {
+    deleteDoc(doc(db, 'users', id)).then(() => {
+      this.me = {};
+    });
   }
 
   uploadFile(fileId: string, file: File): Promise<UploadResult> {
@@ -43,11 +77,6 @@ export class FirebaseService {
     return uploadBytes(fileRef, file);
   }
 
-  /*getFile(fileId: string): Promise<ArrayBuffer> {
-    const fileRef = ref(storage, fileId);
-    console.log('get fileRef: ' + fileRef);
-    return getBytes(fileRef);
-  }*/
   getFileUrl(fileId: string): Promise<string> {
     return getDownloadURL(ref(storage, fileId));
   }

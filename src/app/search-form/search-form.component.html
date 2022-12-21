@@ -1,0 +1,33 @@
+<div>
+    *** Enter Child's info ***<br/>
+    Name:<input #name /><br/>
+    Birth Date:<input #birthDate /><br/>
+    <button type="button" (click)="search(name.value, birthDate.value)">Search</button>
+</div>
+<div *ngIf="loaded && me">
+    HERE YOU GO
+    <table>
+        <tr>
+            <td>name:</td>
+            <td>{{me.data.name}}</td>
+        </tr>
+        <tr>
+            <td>birthDate:</td>
+            <td>{{me.data.birthDate}}</td>
+        </tr>
+        <tr>
+            <td>address:</td>
+            <td>{{me.data.address}}</td>
+        </tr>
+    </table>
+    <br/>
+    <app-file-upload></app-file-upload>
+</div>
+<div *ngIf="loaded && !me">
+    ADD DATA<br/>
+    Name: {{name.value}} <br/>
+    Birth Date: {{birthDate.value}} <br/>
+    Address:<input #addressN />
+    <button type="button" (click)="add(name.value, birthDate.value, addressN.value)">Add</button>
+</div>
+<div *ngIf="!loaded">---</div>

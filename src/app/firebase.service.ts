@@ -31,12 +31,11 @@ export class FirebaseService {
 
   async getMe(name:string, birthDate:string) : Promise<{id:string, data:any}|null> {
     console.log('getMe function invoked: ', name, birthDate);
-    const q = query(collection(db, "postbox"), where("name", "==", name), where("birthDate", "==", birthDate));
-    /*getDocs(q).then((querySnapshot) =>
-      querySnapshot.forEach((doc) => {
-        this.me={ id: doc.id, data: doc.data()};
-      })
-    );*/
+    //const q = query(collection(db, "postbox"), where("name", "==", name), where("birthDate", "==", birthDate));
+    const q = query(
+      collection(db, "postbox"),
+      where("name_lower", "==", name.toLowerCase()),
+      where("birthDate", "==", birthDate));
     let querySnapshot = await getDocs(q);
     //let ret = querySnapshot.docs.map(doc =>  {id:doc.id, data:doc.data()});
     try {
@@ -53,6 +52,7 @@ export class FirebaseService {
       const now = new Date();
       addDoc(collection(db, 'postbox'), {
         name: name,
+        name_lower: name.toLowerCase(),
         birthDate: birthDate,
         address: address,
         creationDate: now.toISOString()
@@ -66,7 +66,7 @@ export class FirebaseService {
   }
 
   del(id: string) {
-    deleteDoc(doc(db, 'users', id)).then(() => {
+    deleteDoc(doc(db, 'postbox', id)).then(() => {
       this.me = {};
     });
   }

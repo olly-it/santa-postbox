@@ -14,6 +14,7 @@ export class SearchFormComponent implements OnInit {
     private dateAdapter: DateAdapter<any>
   ) {
     this.dateAdapter.setLocale('en-GB'); // dd/mm/yyyy
+    // https://stackoverflow.com/questions/69205899/angular-material-datepicker-manual-date-entry-in-the-input-field
   }
 
   ngOnInit(): void {}

@@ -20,35 +20,25 @@
 <div *ngIf="loaded && me">
   <!-- user loaded-->
   <br />
-  <table>
-    <tr>
-      <td>name:</td>
-      <td>{{ me.data.name }}</td>
-    </tr>
-    <tr>
-      <td>birthDate:</td>
-      <td>{{ me.data.birthDate }}</td>
-    </tr>
-    <tr>
-      <td>address:</td>
-      <td>{{ me.data.address }}</td>
-    </tr>
-  </table>
-  <br />
+  <br/>
+  <mat-form-field class="example-full-width">
+    <mat-label>Address</mat-label>
+    <textarea [readonly]=true matInput>{{me.data.address}}</textarea>
+  </mat-form-field><br/>
+  <br/>
   <app-file-upload></app-file-upload>
 </div>
 <div *ngIf="loaded && !me">
   <!-- unexisting user -->
   <br />
-  ADD DATA<br />
-  Name: {{ name.value }} <br />
-  Birth Date: {{ birthDate.value }} <br />
-  Address:<input #addressN />
-  <button
-    type="button"
-    (click)="add(name.value, birthDate.value, addressN.value)"
-  >
+  USER NOT FOUND - ENTER ADDRESS<br />
+  <mat-form-field class="example-full-width">
+    <mat-label>Address</mat-label>
+    <textarea #addressN matInput placeholder="Ex. Clombe rd 12, 76772 London (GB)"></textarea>
+  </mat-form-field><br/>
+  <button mat-raised-button (click)="add(name.value, birthDate.value, addressN.value)">
     Add
   </button>
+
 </div>
-<div *ngIf="!loaded">---</div>
+<div *ngIf="!loaded"></div>

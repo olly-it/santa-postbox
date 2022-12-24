@@ -1,15 +1,15 @@
 <div class="text-center">
-  <input class="form-control" type="file" (change)="onChange($event)" />
-
-  <button (click)="onUpload()" class="btn btn-success">Upload</button>
-
-  <!--Flag variable is used here-->
+  <div *ngIf="furl && !uploading">
+    LETTER:<br />
+    <img [src]="furl" style="width: 100%; max-width: 500px" />
+  </div>
   <div class="container" *ngIf="uploading">
     <h3>Uploading ...</h3>
   </div>
 
-  <div>
-    HERE the image:<br />
-    <img [src]="furl" style="width: 100%; max-width: 500px" />
-  </div>
+  <!--<input class="form-control" type="file" (change)="onChange($event)" />
+  <button (click)="onUpload()" class="btn btn-success">Upload</button>-->
+  <input hidden (change)="onChange($event)" type="file" #fileInput />
+  <button mat-raised-button (click)="fileInput.click()">Choose File</button>
+
 </div>

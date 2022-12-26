@@ -1,12 +1,12 @@
 <div>
-  <p>Enter your data!</p>
+  <p>Ciao! Inserisci i tuoi dati per spedire la letterina a Babbo Natale!</p>
   <mat-form-field class="example-full-width">
-    <mat-label>Name</mat-label>
-    <input #name matInput placeholder="Ex. John Smith" />
+    <mat-label>Nome</mat-label>
+    <input #name matInput placeholder="Ex. Marco Rossi" />
   </mat-form-field>
   <br />
   <mat-form-field appearance="fill">
-    <mat-label>Birth Date</mat-label>
+    <mat-label>Data di nascita</mat-label>
     <input matInput #birthDate [matDatepicker]="picker" />
     <!--<mat-hint>DD/MM/YYYY</mat-hint>-->
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -14,7 +14,7 @@
   </mat-form-field>
   <br />
   <button mat-raised-button (click)="search(name.value, birthDate.value)">
-    Search
+    Cerca
   </button>
 </div>
 <div *ngIf="loaded && me">
@@ -22,7 +22,7 @@
   <br />
   <br/>
   <mat-form-field class="example-full-width">
-    <mat-label>Address</mat-label>
+    <mat-label>Indirizzo</mat-label>
     <textarea [readonly]=true matInput>{{me.data.address}}</textarea>
   </mat-form-field><br/>
   <br/>
@@ -31,13 +31,13 @@
 <div *ngIf="loaded && !me">
   <!-- unexisting user -->
   <br />
-  USER NOT FOUND - ENTER ADDRESS<br />
+  Non hai ancora inviato la letterina? Inserisci il tuo indirizo<br />
   <mat-form-field class="example-full-width">
-    <mat-label>Address</mat-label>
-    <textarea #addressN matInput placeholder="Ex. Clombe rd 12, 76772 London (GB)"></textarea>
+    <mat-label>Indirizzo</mat-label>
+    <textarea #addressN matInput placeholder="Ex. Via della Pace 45, 12345 Roma (IT)"></textarea>
   </mat-form-field><br/>
   <button mat-raised-button (click)="add(name.value, birthDate.value, addressN.value)">
-    Add
+    Salva
   </button>
 
 </div>

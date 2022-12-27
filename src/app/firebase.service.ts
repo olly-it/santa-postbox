@@ -29,12 +29,18 @@ export class FirebaseService {
   constructor() {}
   me: any = {};
 
-  async getMe(name:string, birthDate:string) : Promise<{id:string, data:any}|null> {
-    console.log('getMe function invoked: ', name, birthDate);
+  composeFullname(name: string, surname: string): string {
+    if (surname) surname = surname.trim();
+    if (name) name = name.trim();
+    return name+" "+surname;
+  }
+
+  async getMe(name:string, surname:string, birthDate:string) : Promise<{id:string, data:any}|null> {
+    console.log('getMe function invoked: ', name, surname, birthDate);
     //const q = query(collection(db, "postbox"), where("name", "==", name), where("birthDate", "==", birthDate));
     const q = query(
       collection(db, "postbox"),
-      where("name_lower", "==", name.toLowerCase()),
+      where("fullname_lower", "==", this.composeFullname(name,surname).trim().toLowerCase()),
       where("birthDate", "==", birthDate));
     let querySnapshot = await getDocs(q);
     //let ret = querySnapshot.docs.map(doc =>  {id:doc.id, data:doc.data()});
@@ -45,20 +51,21 @@ export class FirebaseService {
     }
   }
 
-  add(name: string, birthDate: string, address: string) {
+  add(name: string, surname: string, birthDate: string, address: string) {
     console.log('onAdd function invoked');
     if (name == '') return;
     try {
       const now = new Date();
       addDoc(collection(db, 'postbox'), {
         name: name,
-        name_lower: name.toLowerCase(),
+        surname: surname,
+        fullname_lower: this.composeFullname(name,surname).trim().toLowerCase(),
         birthDate: birthDate,
         address: address,
         creationDate: now.toISOString()
       }).then((x) => {
         console.log('Document written with ID: ', x.id);
-        this.getMe(name, birthDate);
+        this.getMe(name, surname, birthDate);
       });
     } catch (e) {
       console.error('Error adding document: ', e);

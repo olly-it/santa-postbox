@@ -2,7 +2,12 @@
   <p>Ciao! Inserisci i tuoi dati per spedire la letterina a Babbo Natale!</p>
   <mat-form-field class="example-full-width">
     <mat-label>Nome</mat-label>
-    <input #name matInput placeholder="Ex. Marco Rossi" />
+    <input #name matInput placeholder="Ex. Marco" />
+  </mat-form-field>
+  &nbsp;
+  <mat-form-field class="example-full-width">
+    <mat-label>Cognome</mat-label>
+    <input #surname matInput placeholder="Ex. Rossi" />
   </mat-form-field>
   <br />
   <mat-form-field appearance="fill">
@@ -12,8 +17,8 @@
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
-  <br />
-  <button mat-raised-button (click)="search(name.value, birthDate.value)">
+  &nbsp;
+  <button mat-raised-button (click)="search(name.value, surname.value, birthDate.value)">
     Cerca
   </button>
 </div>
@@ -36,7 +41,7 @@
     <mat-label>Indirizzo</mat-label>
     <textarea #addressN matInput placeholder="Ex. Via della Pace 45, 12345 Roma (IT)"></textarea>
   </mat-form-field><br/>
-  <button mat-raised-button (click)="add(name.value, birthDate.value, addressN.value)">
+  <button mat-raised-button (click)="add(name.value, surname.value, birthDate.value, addressN.value)">
     Salva
   </button>
 

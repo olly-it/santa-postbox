@@ -11,6 +11,7 @@ export class SearchFormComponent implements OnInit {
   constructor(private firebaseService: FirebaseService) {}
 
   ngOnInit(): void {}
+
   search(name: string, surname: string,  birthDate: string): void {
     console.log('looking for: ', name, surname, birthDate);
     if (!name || !birthDate) return;
@@ -19,6 +20,7 @@ export class SearchFormComponent implements OnInit {
       console.log('me: ', this.me);
       this.loaded = true;
     });
+    // TODO: refresh file-upload in such a way
   }
 
   add(name: string, surname: string, birthDate: string, address: string): void {
